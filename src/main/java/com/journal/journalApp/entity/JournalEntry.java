@@ -1,7 +1,10 @@
 package com.journal.journalApp.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class JournalEntry {
-    private long entry;
+    private String entry;
 
     public String getTitle() {
         return title;
@@ -19,11 +22,11 @@ public class JournalEntry {
         this.content = content;
     }
 
-    public long getEntry() {
+    public String getEntry() {
         return entry;
     }
 
-    public void setEntry(long entry) {
+    public void setEntry(String entry) {
         this.entry = entry;
     }
 

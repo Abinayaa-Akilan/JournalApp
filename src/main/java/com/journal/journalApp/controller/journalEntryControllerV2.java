@@ -5,31 +5,27 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 @RestController
-@RequestMapping("/_heyy")
-public class journalEntryController {
-    private HashMap<Long,JournalEntry> journalEntries = new HashMap<>();
+@RequestMapping("/heyy")
+public class journalEntryControllerV2 {
     @GetMapping
     public List<JournalEntry> getAll(){
-        List<JournalEntry> res = new ArrayList<>(journalEntries.values());
-        return res;
+        return null;
     }
     @PostMapping
     public boolean creatEntry(@RequestBody JournalEntry myEntry){
-        journalEntries.put(myEntry.getEntry(),myEntry);
         return true;
     }
     @GetMapping("id/{myId}")
     public JournalEntry getJournalEntryById(@PathVariable long Id){
-        return journalEntries.get(Id);
+        return null;
     }
 
     @DeleteMapping("id/{Id}")
     public JournalEntry deleteJournalEntryById(@PathVariable long Id) {
-        return journalEntries.remove(Id);
+        return null;
     }
 
     @PutMapping("id/{Id}")
     public void updateJournalEntry(@PathVariable long Id, @RequestBody JournalEntry jr) {
-        journalEntries.put(Id,jr);
     }
 }
