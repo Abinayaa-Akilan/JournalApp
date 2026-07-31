@@ -4,6 +4,8 @@ import com.journal.journalApp.entity.JournalEntry;
 import com.journal.journalApp.service.JournalEntryService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -18,14 +20,18 @@ public class journalEntryControllerV2 {
         return journalEntryService.getAll();
     }
     @PostMapping
-    public boolean creatEntry(@RequestBody JournalEntry myEntry){
+    public ResponseEntity<JournalEntry> creatEntry(@RequestBody JournalEntry myEntry){
         myEntry.setDate(LocalDateTime.now());
         journalEntryService.saveEntry(myEntry);
-        return true;
+        return new ResponseEntity<>(myEntry,HttpStatus.CREATED);
     }
     @GetMapping("id/{myId}")
-    public JournalEntry getJournalEntryById(@PathVariable ObjectId Id){
-        return journalEntryService.AddJournalEntryById(Id).orElse(null);
+    public ResponseEntity<Optional<JournalEntry>> getJournalEntryById(@PathVariable ObjectId Id){
+        Optional<JournalEntry> temp  = journalEntryService.FindJournalById(Id);
+        if(temp.isPresent()) {
+            return new ResponseEntity<>(temp, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("id/{Id}")
@@ -36,11 +42,11 @@ public class journalEntryControllerV2 {
 
     @PutMapping("id/{Id}")
     public JournalEntry updateJournalEntry(@PathVariable ObjectId Id, @RequestBody JournalEntry jr) {
-        JournalEntry temp = journalEntryService.AddJournalEntryById(Id).orElse(null);
-        if(temp!=null) {
-            temp.setTitle(jr.getTitle());
-            temp.setContent(jr.getContent());
-            return temp;
+        Optional<JournalEntry> temp = journalEntryService.FindJournalById(Id);
+        if(temp.isPresent()) {
+            temp.get().setTitle(jr.getTitle());
+            temp.get().setContent(jr.getContent());
+            return temp.orElse(null);
         }
         return null;
     }

@@ -20,8 +20,11 @@ public class JournalEntryService{
     public List<JournalEntry> getAll() {
         return journalEntryRepo.findAll();
     }
-    public Optional<JournalEntry> AddJournalEntryById(ObjectId Id) {
+    public Optional<JournalEntry> FindJournalById(ObjectId Id){
         return journalEntryRepo.findById(Id);
+    }
+    public void AddJournalEntryById(JournalEntry JP) {
+        journalEntryRepo.save(JP);
     }
     public void DelJournalEntryById(ObjectId Id) {
         journalEntryRepo.deleteById(Id);
